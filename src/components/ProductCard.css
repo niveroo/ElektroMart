@@ -1,0 +1,15 @@
+.product-card {
+    border: 3px solid rgb(3, 3, 109);
+    background-color: rgb(68, 64, 124);
+    border-radius: 8px;
+    padding: 3px;
+    flex: 1;
+    min-width: 200px;
+    transition: background-color 0.5s;
+    /* max-width: max-content+100px; */
+    flex: 0 0 auto;
+}
+
+.product-card:hover {
+    background-color: rgb(23, 90, 90);
+}
