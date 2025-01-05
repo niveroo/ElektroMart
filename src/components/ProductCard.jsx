@@ -1,4 +1,4 @@
-import './ProductCard.css'
+import '/src/styles/ProductCard.css'
 const ProductCard = ({ product }) => {
   function HandleClick() {
     console.log("clicked")

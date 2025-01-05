@@ -1,5 +1,5 @@
 import logo from '/src/assets/laptop.svg'
-import './Logo.css'
+import '/src/styles/Logo.css'
 const Logo = () => {
     const now = new Date();
     return (

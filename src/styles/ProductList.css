@@ -2,6 +2,7 @@
     display: grid;
     border: 5px solid red;
     gap: 1em;
+    margin: 0.5em;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     flex-grow: 1;
     width: 100%;

@@ -1,6 +1,7 @@
-import './Banner.css'
+import '/src/styles/Banner.css'
 import Logo from './Logo';
 import { useState } from 'react'
+import Time from './Time';
 
 const Banner = () => {
     const [time, setTime] = useState(new Date());
@@ -9,7 +10,7 @@ const Banner = () => {
     return (
         <div className="banner">
             <Logo />
-            <span>Time: {time.toLocaleTimeString()}</span>
+            <Time />
         </div>
     );
 };

@@ -1,5 +1,5 @@
-import ProductCard from '/src/components/ProductCard.jsx'
-import './ProductList.css';
+import ProductCard from './ProductCard';
+import '/src/styles/ProductList.css';
 
 const ProductList = ({ products }) => {
   return (

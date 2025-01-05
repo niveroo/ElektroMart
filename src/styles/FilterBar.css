@@ -1,0 +1,22 @@
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    margin: 0.5em;
+    flex-direction: column;
+    border: 3px solid black;
+    flex-shrink: 1;
+}
+
+.filter-bar input,
+.filter-bar select {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 3px;
+    color: #757575;
+}
+
+.filter-bar button {
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
