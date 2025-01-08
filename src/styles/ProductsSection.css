@@ -1,8 +1,7 @@
 .products-section {
     display: flex;
-    /* border: 4px solid greenyellow; */
     background-color: #757575;
     border-radius: 15px;
-    padding: 1em;
-    gap: 1em;
+    padding: 1.5em;
+    gap: 1.5em;
 }

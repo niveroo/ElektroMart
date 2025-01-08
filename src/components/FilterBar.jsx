@@ -1,24 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '/src/styles/FilterBar.css';
 
 const FilterBar = ({ onFilter }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const [name, setName] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [category, setCategory] = useState('');
 
-    const handleFilter = () => {
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+
+        setName(queryParams.get('name') || '');
+        setMinPrice(queryParams.get('minPrice') || '');
+        setMaxPrice(queryParams.get('maxPrice') || '');
+        setCategory(queryParams.get('category') || '');
+    }, [location.search]);
+
+    const handleFilterClick = () => {
+        const queryParams = new URLSearchParams(window.location.search);
+
+        if (name) {
+            queryParams.set('name', name);
+        } else {
+            queryParams.delete('name');
+        }
+
+        if (minPrice) {
+            queryParams.set('minPrice', minPrice);
+        } else {
+            queryParams.delete('minPrice');
+        }
+
+        if (maxPrice) {
+            queryParams.set('maxPrice', maxPrice);
+        } else {
+            queryParams.delete('maxPrice');
+        }
+
+        if (category) {
+            queryParams.set('category', category);
+        } else {
+            queryParams.delete('category');
+        }
+
         onFilter({ name, minPrice, maxPrice, category });
+
+        navigate(`/search?${queryParams.toString()}`);
     };
 
     return (
         <div className="filter-bar">
-            <input
-                type="text"
-                placeholder="Product name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
             <input
                 type="number"
                 placeholder="Min price"
@@ -39,7 +74,7 @@ const FilterBar = ({ onFilter }) => {
                 <option value="Monitors">Monitors</option>
                 <option value="Tablets">Tablets</option>
             </select>
-            <button onClick={handleFilter}>Apply Filters</button>
+            <button onClick={handleFilterClick}>Apply Filters</button>
         </div>
     );
 };

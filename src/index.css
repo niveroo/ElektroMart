@@ -41,11 +41,11 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.25s;
 }
 
 button:hover {
-  border-color: #646cff;
+  background-color: rgb(44, 44, 44);
 }
 
 button:focus,
