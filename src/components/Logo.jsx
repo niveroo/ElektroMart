@@ -7,7 +7,7 @@ const Logo = () => {
     const navigate = useNavigate();
 
     const handleLogoClick = () => {
-        navigate('/');  // Переход на главную страницу
+        navigate('/');
     };
 
     return (

@@ -1,32 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '/src/styles/Searchline.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setName } from '../store/slices/filtersSlice';
 
 const SearchLine = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Считываем параметр name из URL, если он есть
-    const [searchQuery, setSearchQuery] = useState('');
-
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const queryFromUrl = params.get('name') || '';
-        setSearchQuery(queryFromUrl); // Устанавливаем значение из URL в input
-    }, [location.search]); // Выполняем при изменении URL
+    const dispatch = useDispatch();
+    const filters = useSelector((state) => state.filters);
+    const [searchQuery, setSearchQuery] = useState(filters.name);
 
     const handleInputChange = (event) => {
         setSearchQuery(event.target.value);
     };
 
     const handleSearchClick = () => {
-        const queryParams = new URLSearchParams(window.location.search);
         if (searchQuery.trim()) {
-            queryParams.set('name', searchQuery); // Добавляем фильтр по имени
-        } else {
-            queryParams.delete('name'); // Удаляем параметр, если строка поиска пустая
+            dispatch(setName(searchQuery));
         }
-        navigate(`/search?${queryParams.toString()}`); // Обновляем URL
     };
 
     return (
