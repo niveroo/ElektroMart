@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCategory, setMaxPrice, setMinPrice } from '../store/slices/filtersSlice';
 
 const FilterBar = () => {
-
     const dispatch = useDispatch();
+
     const filters = useSelector((state) => state.filters);
     const [minFilterPrice, setFilterMinPrice] = useState(filters.minPrice);
     const [maxFilterPrice, setFilterMaxPrice] = useState(filters.maxPrice);
@@ -32,7 +32,7 @@ const FilterBar = () => {
                 value={maxFilterPrice}
                 onChange={(e) => setFilterMaxPrice(e.target.value)}
             />
-            <select value={filtercategory} onChange={(e) => setFilterCategory(e.target.value)}>
+            <select value={filtercategory} onChange={(e) => setFilterCategory(e.target.value.toLowerCase())}>
                 <option value="">All Categories</option>
                 <option value="Laptops">Laptops</option>
                 <option value="Smartphones">Smartphones</option>

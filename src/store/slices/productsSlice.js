@@ -36,8 +36,18 @@ export const fetchDBProducts = createAsyncThunk(
 
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
-    async () => {
-        return products1;
+    async (filters) => {
+
+        const filteredProducts = products1.filter((product) => {
+            const matchesName = filters.name === '' || product.name.toLowerCase().includes(filters.name.toLowerCase());
+            const matchesMinPrice = filters.minPrice === '' || product.price >= parseFloat(filters.minPrice);
+            const matchesMaxPrice = filters.maxPrice === '' || product.price <= parseFloat(filters.maxPrice);
+            const matchesCategory = filters.category === '' || product.category.toLowerCase() === filters.category.toLowerCase();
+
+            return matchesName && matchesMinPrice && matchesMaxPrice && matchesCategory;
+        });
+
+        return filteredProducts;
     }
 );
 
