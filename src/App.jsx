@@ -9,24 +9,6 @@ import { use } from 'react';
 
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-
-    const name = searchParams.get("name") || '';
-    const minPrice = searchParams.get("minprice") || '';
-    const maxPrice = searchParams.get("maxprice") || '';
-    const category = searchParams.get("category") || '';
-
-    if (name) dispatch(setName(name));
-    if (minPrice) dispatch(setMinPrice(minPrice));
-    if (maxPrice) dispatch(setMaxPrice(maxPrice));
-    if (category) dispatch(setCategory(category));
-
-    console.log("initial filter", searchParams.toString(), location);
-  }, [dispatch]);
-
   return (
     <>
       <Router>
