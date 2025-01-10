@@ -9,16 +9,16 @@ const SearchLine = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
+    const genNavigateUrl = useNavigateUrl();
 
     const filters = useSelector((state) => state.filters);
     const [searchQuery, setSearchQuery] = useState(filters.name);
+
 
     const handleSearchClick = () => {
         if (!location.pathname.startsWith('/search')) {
             dispatch(clearFilters())
             dispatch(setName(searchQuery));
-
-            const genNavigateUrl = useNavigateUrl();
             navigate(genNavigateUrl())
         }
         else {

@@ -17,7 +17,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     dispatch(fetchProducts(filters));
-    navigate(genNavigateUrl(filters))
+    //navigate(genNavigateUrl(filters))
   }, [filters]);
 
   return (

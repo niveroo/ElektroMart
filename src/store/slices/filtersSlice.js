@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useLocation } from "react-router-dom";
 
+const searchParams = new URLSearchParams(location.search);
+
 const initialState = {
-    name: '',
-    minPrice: '',
-    maxPrice: '',
-    category: '',
+    name: searchParams.get("name") || '',
+    minPrice: searchParams.get("minprice") || '',
+    maxPrice: searchParams.get("maxprice") || '',
+    category: searchParams.get("category") || '',
 };
 
 const filtersSlice = createSlice({
