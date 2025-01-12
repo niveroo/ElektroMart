@@ -1,25 +1,23 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '/src/styles/Searchline.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearFilters, setName } from '../store/slices/filtersSlice';
-import { useNavigateUrl } from '../hooks/useNavigateUrl';
+import getNavigateUrl from '../hooks/useNavigateUrl';
 
 const SearchLine = () => {
-    const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
-    const genNavigateUrl = useNavigateUrl();
+    const navigate = useNavigate();
 
     const filters = useSelector((state) => state.filters);
     const [searchQuery, setSearchQuery] = useState(filters.name);
-
 
     const handleSearchClick = () => {
         if (!location.pathname.startsWith('/search')) {
             dispatch(clearFilters())
             dispatch(setName(searchQuery));
-            navigate(genNavigateUrl())
+            navigate(getNavigateUrl({ name: searchQuery }))
         }
         else {
             dispatch(setName(searchQuery));
@@ -42,3 +40,4 @@ const SearchLine = () => {
 }
 
 export default SearchLine;
+;

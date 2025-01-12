@@ -6,6 +6,7 @@ import { setCategory, setMaxPrice, setMinPrice } from '../store/slices/filtersSl
 
 const FilterBar = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const filters = useSelector((state) => state.filters);
     const [minFilterPrice, setFilterMinPrice] = useState(filters.minPrice);

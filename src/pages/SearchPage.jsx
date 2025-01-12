@@ -4,21 +4,19 @@ import ProductsSection from '../components/ProductsSection';
 import './SearchPage.css'
 import { fetchProducts } from '../store/slices/productsSlice';
 import { useEffect } from 'react';
-import { setCategory, setMaxPrice, setMinPrice, setName } from '../store/slices/filtersSlice';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useNavigateUrl } from '../hooks/useNavigateUrl';
+import { useNavigate } from 'react-router-dom';
+import getNavigateUrl from '../hooks/useNavigateUrl';
 
 const SearchPage = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
   const navigate = useNavigate();
 
-  const genNavigateUrl = useNavigateUrl();
-
   useEffect(() => {
     dispatch(fetchProducts(filters));
-    //navigate(genNavigateUrl(filters))
+    navigate(getNavigateUrl(filters))
   }, [filters]);
+
 
   return (
     <div className='home'>
