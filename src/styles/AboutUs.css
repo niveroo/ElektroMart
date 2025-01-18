@@ -1,0 +1,7 @@
+.about-us {
+    border-radius: 15px;
+    background-color: rgba(240, 248, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding-inline: 0.5em;
+    max-width: 20%;
+}
