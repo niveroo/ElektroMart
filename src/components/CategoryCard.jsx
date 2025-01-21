@@ -7,6 +7,7 @@ import getNavigateUrl from '../hooks/useNavigateUrl';
 const CategoryCard = ({ category }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   function HandleClick() {
     dispatch(setCategory(category.category))
     navigate(getNavigateUrl({ category: category.category }))

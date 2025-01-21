@@ -5,6 +5,7 @@
     border-radius: 8px;
     padding: 7px;
     min-width: 200px;
+    max-width: 450px;
     transition: background-color 0.5s, box-shadow 0.5s;
     flex: 0 0 auto;
 }

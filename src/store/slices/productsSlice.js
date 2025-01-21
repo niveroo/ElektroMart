@@ -51,6 +51,14 @@ export const fetchProducts = createAsyncThunk(
     }
 );
 
+export const fetchRecommendedProducts = createAsyncThunk(
+    'products/fetchRecommendedProducts',
+    async ({ limit }) => {
+        const recommendedProducts = products1.slice(0, limit);
+        return recommendedProducts;
+    }
+);
+
 export const productsSlice = createSlice({
     name: 'products',
     initialState,

@@ -19,7 +19,7 @@ const SearchPage = () => {
 
 
   return (
-    <div className='home'>
+    <div className='search-page'>
       <Banner />
       <ProductsSection />
     </div>

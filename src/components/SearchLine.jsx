@@ -40,4 +40,3 @@ const SearchLine = () => {
 }
 
 export default SearchLine;
-;
