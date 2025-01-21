@@ -75,73 +75,81 @@ let products1 = [
     }
 ]
 
-
 const initialState = {
     isLoading: false,
-    products: [],
+    id: null,
+    product: null,
     error: false,
 };
 
-export const fetchDBProducts = createAsyncThunk(
-    'products/fetchBDProducts',
-    async () => {
-        const response = await fetch(
-            `${API_KEY}/api/products`,
-            {
-                method: 'GET',
-                headers: {
-                    accept: 'text/plain',
-                },
+export const fetchDBProductById = createAsyncThunk(
+    'product/fetchDBById',  // The action type prefix
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await fetch(
+                `${API_KEY}/api/products/${id}`,  // Fetch with product ID in URL
+                {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',  // Accept JSON response
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                return rejectWithValue('Network response was not ok');
             }
-        );
 
-        return response.json();
+            const product = await response.json();  // Convert response to JSON
+            return product;  // Return the product data to be used in reducers
+        } catch (error) {
+            return rejectWithValue('Error fetching the product');  // Pass error message if failed
+        }
     }
 );
 
-export const fetchProducts = createAsyncThunk(
-    'products/fetchProducts',
-    async (filters) => {
+export const fetchProductById = createAsyncThunk(
+    'product/fetchById',
+    async (id, { rejectWithValue }) => {
+        try {
 
-        const filteredProducts = products1.filter((product) => {
-            const matchesName = filters.name === '' || product.name.toLowerCase().includes(filters.name.toLowerCase());
-            const matchesMinPrice = filters.minPrice === '' || product.price >= parseFloat(filters.minPrice);
-            const matchesMaxPrice = filters.maxPrice === '' || product.price <= parseFloat(filters.maxPrice);
-            const matchesCategory = filters.category === '' || product.categoryName.toLowerCase() === filters.category.toLowerCase();
+            const product = products1.find(product => product.id == id);
 
-            return matchesName && matchesMinPrice && matchesMaxPrice && matchesCategory;
-        });
+            console.log("product:", product);
+            if (!product) {
+                return rejectWithValue('Product not found');
+            }
 
-        return filteredProducts;
+            return product;
+        } catch (error) {
+            return rejectWithValue('Error fetching the product');
+        }
     }
 );
 
-export const fetchRecommendedProducts = createAsyncThunk(
-    'products/fetchRecommendedProducts',
-    async ({ limit }) => {
-        const recommendedProducts = products1.slice(0, limit);
-        return recommendedProducts;
-    }
-);
-
-export const productsSlice = createSlice({
-    name: 'products',
+export const productSlice = createSlice({
+    name: 'product',
     initialState,
+    reducers: {
+        setId(state, action) {
+            state.id = action.payload;
+        },
+    },
     extraReducers: (builder) => {
-        builder.addCase(fetchProducts.pending, (state, action) => {
+        builder.addCase(fetchProductById.pending, (state, action) => {
             state.isLoading = true;
         });
-        builder.addCase(fetchProducts.fulfilled, (state, action) => {
+        builder.addCase(fetchProductById.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.products = action.payload;
+            state.product = action.payload;
         });
-        builder.addCase(fetchProducts.rejected, (state, action) => {
+        builder.addCase(fetchProductById.rejected, (state, action) => {
             state.error = true;
         });
+
     },
 });
 
+export const { setId } = productSlice.actions;
 
-export const { } = productsSlice.actions;
-
-export default productsSlice.reducer;
+export default productSlice.reducer;
