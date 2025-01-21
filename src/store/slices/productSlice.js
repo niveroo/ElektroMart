@@ -7,7 +7,7 @@ let products1 = [
         "description": "Powerful laptop",
         "price": 999,
         "stock": 10,
-        "imagePath": "./vite.svg",
+        "imagePath": './vite.svg',
         "categoryName": "Laptops"
     },
     {
@@ -16,7 +16,7 @@ let products1 = [
         "description": "Latest model",
         "price": 799,
         "stock": 15,
-        "imagePath": "./vite.svg",
+        "imagePath": "https://images.unsplash.com/photo-1598965402089-897ce52e8355?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         "categoryName": "Smartphones"
     },
     {

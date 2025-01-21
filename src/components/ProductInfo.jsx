@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductById } from "../store/slices/productSlice";
+import '../styles/ProductInfo.css'
 
 const ProductInfo = () => {
     const { product, isLoading, error, id } = useSelector((state) => state.product);
@@ -30,12 +31,14 @@ const ProductInfo = () => {
 
     return product && (
         <div className="product-info-container">
-            <div className="product-image">
-                <img src={product.imagePath} alt={product.name} />
-            </div>
-            <div className="product-details">
-                <h2>{product.name}</h2>
-                <p>{product.description}</p>
+            <div>
+                <div className="product-image">
+                    <img src={product.imagePath} alt={product.name} />
+                </div>
+                <div className="product-details">
+                    <h2>{product.name}</h2>
+                    <p>{product.description}</p>
+                </div>
             </div>
             <div className="product-purchase">
                 <p className="product-price">${product.price}</p>
