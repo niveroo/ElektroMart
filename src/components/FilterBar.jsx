@@ -1,55 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '/src/styles/FilterBar.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCategory, setMaxPrice, setMinPrice } from '../store/slices/filtersSlice';
 
-const FilterBar = ({ onFilter }) => {
+const FilterBar = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const [name, setName] = useState('');
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-    const [category, setCategory] = useState('');
-
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-
-        setName(queryParams.get('name') || '');
-        setMinPrice(queryParams.get('minPrice') || '');
-        setMaxPrice(queryParams.get('maxPrice') || '');
-        setCategory(queryParams.get('category') || '');
-    }, [location.search]);
+    const filters = useSelector((state) => state.filters);
+    const [minFilterPrice, setFilterMinPrice] = useState(filters.minPrice);
+    const [maxFilterPrice, setFilterMaxPrice] = useState(filters.maxPrice);
+    const [filtercategory, setFilterCategory] = useState(filters.category);
 
     const handleFilterClick = () => {
-        const queryParams = new URLSearchParams(window.location.search);
-
-        if (name) {
-            queryParams.set('name', name);
-        } else {
-            queryParams.delete('name');
-        }
-
-        if (minPrice) {
-            queryParams.set('minPrice', minPrice);
-        } else {
-            queryParams.delete('minPrice');
-        }
-
-        if (maxPrice) {
-            queryParams.set('maxPrice', maxPrice);
-        } else {
-            queryParams.delete('maxPrice');
-        }
-
-        if (category) {
-            queryParams.set('category', category);
-        } else {
-            queryParams.delete('category');
-        }
-
-        onFilter({ name, minPrice, maxPrice, category });
-
-        navigate(`/search?${queryParams.toString()}`);
+        dispatch(setMinPrice(minFilterPrice));
+        dispatch(setMaxPrice(maxFilterPrice));
+        dispatch(setCategory(filtercategory));
     };
 
     return (
@@ -57,16 +24,16 @@ const FilterBar = ({ onFilter }) => {
             <input
                 type="number"
                 placeholder="Min price"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
+                value={minFilterPrice}
+                onChange={(e) => setFilterMinPrice(e.target.value)}
             />
             <input
                 type="number"
                 placeholder="Max price"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
+                value={maxFilterPrice}
+                onChange={(e) => setFilterMaxPrice(e.target.value)}
             />
-            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <select value={filtercategory} onChange={(e) => setFilterCategory(e.target.value.toLowerCase())}>
                 <option value="">All Categories</option>
                 <option value="Laptops">Laptops</option>
                 <option value="Smartphones">Smartphones</option>

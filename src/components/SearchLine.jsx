@@ -1,32 +1,27 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '/src/styles/Searchline.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearFilters, setName } from '../store/slices/filtersSlice';
+import getNavigateUrl from '../hooks/useNavigateUrl';
 
 const SearchLine = () => {
-    const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // Считываем параметр name из URL, если он есть
-    const [searchQuery, setSearchQuery] = useState('');
-
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const queryFromUrl = params.get('name') || '';
-        setSearchQuery(queryFromUrl); // Устанавливаем значение из URL в input
-    }, [location.search]); // Выполняем при изменении URL
-
-    const handleInputChange = (event) => {
-        setSearchQuery(event.target.value);
-    };
+    const filters = useSelector((state) => state.filters);
+    const [searchQuery, setSearchQuery] = useState(filters.name);
 
     const handleSearchClick = () => {
-        const queryParams = new URLSearchParams(window.location.search);
-        if (searchQuery.trim()) {
-            queryParams.set('name', searchQuery); // Добавляем фильтр по имени
-        } else {
-            queryParams.delete('name'); // Удаляем параметр, если строка поиска пустая
+        if (!location.pathname.startsWith('/search')) {
+            dispatch(clearFilters())
+            dispatch(setName(searchQuery));
+            navigate(getNavigateUrl({ name: searchQuery }))
         }
-        navigate(`/search?${queryParams.toString()}`); // Обновляем URL
+        else {
+            dispatch(setName(searchQuery));
+        }
     };
 
     return (
@@ -35,7 +30,7 @@ const SearchLine = () => {
                 type="text"
                 placeholder="Search for products..."
                 value={searchQuery}
-                onChange={handleInputChange}
+                onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button type="button" onClick={handleSearchClick}>
                 Search
