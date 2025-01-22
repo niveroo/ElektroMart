@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductById } from "../store/slices/productSlice";
+import { addProduct, removeProduct } from "../store/slices/cartSlice";
 import '../styles/ProductInfo.css'
 
 const ProductInfo = () => {
     const { product, isLoading, error, id } = useSelector((state) => state.product);
+    const { ids: cartIds } = useSelector((state) => state.cart);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -13,9 +15,16 @@ const ProductInfo = () => {
         }
     }, [dispatch, id]);
 
+    const isInCart = useMemo(() => cartIds.includes(id), [id, cartIds])
+
     const handleAddToCart = () => {
-        //dispatch(addItem(product));
-        console.log("added to cart", product);
+        if (isInCart) {
+            dispatch(removeProduct(product.id));
+            console.log("remove to cart", product);
+        } else {
+            dispatch(addProduct(product.id));
+            console.log("added to cart", product);
+        }
     };
 
     if (isLoading) {
@@ -44,7 +53,10 @@ const ProductInfo = () => {
                 <p className="product-price">${product.price}</p>
                 <p className="product-stock">In stock: {product.stock} pcs</p>
                 <button className="add-to-cart-btn" onClick={handleAddToCart}>
-                    Add to Cart
+                    {isInCart
+                        ? 'Remove from Cart'
+                        : 'Add to Cart'
+                    }
                 </button>
             </div>
         </div>

@@ -16,7 +16,7 @@ const AboutUs = () => {
                     <li><strong>Phone:</strong> +1 (800) 123-4567</li>
                     <li><strong>Address:</strong> 123 Tech Avenue, Suite 456, Silicon City, CA 94043</li>
                     <li>
-                        <strong>Website:</strong> <a href="https://www.ElektroMart.com" >www.ElektroMart.com</a>
+                        <strong>Website:</strong> <a href="https://www.ElektroMart.com" >http://127.0.0.1:5173/</a>
                     </li>
                 </ul>
             </div>

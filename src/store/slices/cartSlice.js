@@ -78,64 +78,68 @@ let products1 = [
 
 const initialState = {
     isLoading: false,
-    id: null,
-    product: null,
     error: false,
+    ids: [],
+    productsMap: {},
 };
 
-export const fetchDBProductById = createAsyncThunk(
-    'product/fetchDBById',  // The action type prefix
-    async (id, { rejectWithValue }) => {
-        try {
-            return API.getProductById(id)
-                .then(products => products[0])
-        } catch (error) {
-            return rejectWithValue('Error fetching the product');  // Pass error message if failed
-        }
+export const fetchDBCartProducts = createAsyncThunk(
+    'cart/fetchBDProducts',
+    async (ids) => {
+        const promises = ids.map(id => API.getProductById(id))
+        return Promise.all(promises)
     }
 );
 
-export const fetchProductById = createAsyncThunk(
-    'product/fetchById',
-    async (id, { rejectWithValue }) => {
-        try {
-            const product = products1.find(product => product.id == id);
-
-            console.log("product:", product);
-            if (!product) {
-                return rejectWithValue('Product not found');
-            }
-
-            return product;
-        } catch (error) {
-            return rejectWithValue('Error fetching the product');
-        }
+export const fetchCartProducts = createAsyncThunk(
+    'cart/fetchProducts',
+    async (ids) => {
+        return products1.filter(product => ids.includes(product.id))
     }
 );
 
-export const productSlice = createSlice({
-    name: 'product',
+export const cartSlice = createSlice({
+    name: 'cart',
     initialState,
     reducers: {
-        setId(state, action) {
-            state.id = action.payload;
+        setProduct(state, { payload }) {
+            state.ids = payload
+        },
+        addProduct(state, { payload }) {
+            if (state.ids.every(id => id !== payload)) {
+                state.ids.push(payload)
+            }
+        },
+        removeProduct(state, { payload }) {
+            state.ids = state.ids.filter(id => id !== payload)
+        },
+        clearProduct(state) {
+            state.ids = []
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchProductById.pending, (state, action) => {
+        builder.addCase(fetchCartProducts.pending, (state, action) => {
             state.isLoading = true;
         });
-        builder.addCase(fetchProductById.fulfilled, (state, action) => {
+        builder.addCase(fetchCartProducts.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.product = action.payload;
+
+            const products = action.payload
+            const newProductsMap = {}
+
+            for (const product of products) {
+                newProductsMap[product.id] = product
+            }
+
+            state.productsMap = newProductsMap
         });
-        builder.addCase(fetchProductById.rejected, (state, action) => {
+        builder.addCase(fetchCartProducts.rejected, (state, action) => {
             state.error = true;
         });
-
     },
 });
 
-export const { setId } = productSlice.actions;
 
-export default productSlice.reducer;
+export const { setProduct, addProduct, removeProduct, clearProduct } = cartSlice.actions;
+
+export default cartSlice.reducer;

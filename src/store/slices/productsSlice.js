@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import API from '../../services/API';
 
 let products1 = [
     {
-        "id": 1,
+        "id": "1",
         "name": "Laptop",
         "description": "Powerful laptop",
         "price": 999,
@@ -11,7 +12,7 @@ let products1 = [
         "categoryName": "Laptops"
     },
     {
-        "id": 2,
+        "id": "2",
         "name": "Smartphone",
         "description": "Latest model",
         "price": 799,
@@ -20,7 +21,7 @@ let products1 = [
         "categoryName": "Smartphones"
     },
     {
-        "id": 3,
+        "id": "3",
         "name": "Headphones",
         "description": "Noise-cancelling headphones",
         "price": 199,
@@ -29,7 +30,7 @@ let products1 = [
         "categoryName": "Accessories"
     },
     {
-        "id": 4,
+        "id": "4",
         "name": "Smartwatch",
         "description": "Stylish smartwatch",
         "price": 299,
@@ -38,7 +39,7 @@ let products1 = [
         "categoryName": "Accessories"
     },
     {
-        "id": 5,
+        "id": "5",
         "name": "Monitor",
         "description": "4K monitor",
         "price": 499,
@@ -47,7 +48,7 @@ let products1 = [
         "categoryName": "Monitors"
     },
     {
-        "id": 6,
+        "id": "6",
         "name": "Tablet",
         "description": "10-inch tablet",
         "price": 599,
@@ -56,7 +57,7 @@ let products1 = [
         "categoryName": "Tablets"
     },
     {
-        "id": 7,
+        "id": "7",
         "name": "Gaming Laptop",
         "description": "High-performance gaming laptop",
         "price": 1499,
@@ -65,7 +66,7 @@ let products1 = [
         "categoryName": "Laptops"
     },
     {
-        "id": 8,
+        "id": "8",
         "name": "Wireless Earbuds",
         "description": "True wireless earbuds",
         "price": 149,
@@ -85,17 +86,7 @@ const initialState = {
 export const fetchDBProducts = createAsyncThunk(
     'products/fetchBDProducts',
     async (filters) => {
-        const response = await fetch(
-            `${API_KEY}/api/products`,
-            {
-                method: 'GET',
-                headers: {
-                    accept: 'text/plain',
-                },
-            }
-        );
-
-        return response.json();
+        return API.getProducts(filters)
     }
 );
 
