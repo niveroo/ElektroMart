@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Time from './Time';
 import Cart from './Cart';
 import SearchLine from './SearchLine';
+import AuthButton from './AuthButton';
 
 const Banner = () => {
     return (
@@ -11,7 +12,8 @@ const Banner = () => {
             <Logo />
             <SearchLine />
             <Cart />
-            <Time />
+            {/* <Time /> */}
+            <AuthButton />
         </div>
     );
 };
