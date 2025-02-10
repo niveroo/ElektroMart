@@ -1,49 +1,48 @@
-import { useRef, useState, useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchCartProducts, removeProduct } from '../store/slices/cartSlice'
-import debounce from 'lodash/debounce'
-import '../styles/Cart.css'
+import { useRef, useState, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import debounce from 'lodash/debounce';
+import '../styles/Cart.css';
+import { getCart } from '../store/slices/cartSlice';
 
 function Cart() {
-    const ref = useRef()
-    const dispatch = useDispatch()
-    const { isLoading, error, ids, productsMap } = useSelector(state => state.cart)
+    const ref = useRef();
+    const dispatch = useDispatch();
 
-    const [show, setShow] = useState(false)
-    const toggle = () => setShow(prev => !prev)
+    const { refreshed, isLoading, error, productsMap } = useSelector(state => state.cart);
+    const { isLoggedIn } = useSelector(state => state.user);
 
-    const debouncedFetch = useMemo(() => {
-        return debounce(ids => {
-            dispatch(fetchCartProducts(ids))
-        }, 300)
-    }, [])
+    const [show, setShow] = useState(false);
+    const toggle = () => setShow(prev => !prev);
 
     useEffect(() => {
-        debouncedFetch(ids)
-    }, [debouncedFetch, ids])
-
-    const removeFromCart = id => {
-        dispatch(removeProduct(id))
-    }
+        if (isLoggedIn) {
+            if (refreshed === false) {
+                dispatch(getCart());
+            }
+        }
+    }, [isLoggedIn, dispatch, refreshed]);
 
     const content = useMemo(() => {
+        if (!isLoggedIn) {
+            return <div className="not-logged-in">You are not logged in. Please log in to view your cart.</div>;
+        }
+
         if (isLoading) {
-            return 'Loading'
+            return 'Loading...';
         }
 
         if (error) {
-            return 'Boowomp'
+            return 'Failed to load cart items.';
         }
 
-        return ids.map(id => {
-            const product = productsMap[id]
-            const remove = () => removeFromCart(product.id)
+        if (Object.keys(productsMap).length === 0) {
+            return 'Your cart is empty.';
+        }
 
-            return product
-                ? <CartItem key={id} product={product} onRemove={remove} />
-                : 'Loading...'
-        })
-    }, [isLoading, error, ids, productsMap])
+        return Object.values(productsMap).map(product => (
+            <CartItem key={product.id} product={product} />
+        ));
+    }, [isLoading, error, isLoggedIn, productsMap]);
 
     const modal = show && (
         <dialog ref={ref} className="cart-container" onClick={preventPropagation}>
@@ -52,41 +51,32 @@ function Cart() {
                     <h3>Cart</h3>
                     <button onClick={toggle}>Close</button>
                 </div>
-
                 <div className="cart-content">{content}</div>
             </div>
         </dialog>
-    )
+    );
 
     return (
         <div className="cart-anchor" onClick={toggle}>
-            Cart{ids.length ? ` (${ids.length})` : null}
+            Cart {productsMap.length ? ` (${productsMap.length})` : null}
             {modal}
         </div>
-    )
+    );
 }
 
-function CartItem({ product, onRemove }) {
+function CartItem({ product }) {
     return (
         <div className="cart-item">
-            <span>
-                {product.name}
-            </span>
-            <span>
-                {product.description}
-            </span>
-            <span>
-                Price: {product.price}
-            </span>
-            <button onClick={onRemove}>
-                Remove
-            </button>
+            <span>{product.productName}</span>
+            <span>Quantity: {product.quantity}</span>
+            <span>Price: {product.price}</span>
+            <span>Total: {product.totalPrice}</span>
         </div>
-    )
+    );
 }
 
 function preventPropagation(e) {
-    e.stopPropagation()
+    e.stopPropagation();
 }
 
-export default Cart 
+export default Cart;
