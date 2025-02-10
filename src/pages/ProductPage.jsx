@@ -10,7 +10,6 @@ const ProductPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    console.log(useParams());
     useEffect(() => {
         dispatch(setId(id));
     }, [dispatch, id]);

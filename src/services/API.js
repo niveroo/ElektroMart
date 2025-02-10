@@ -65,8 +65,20 @@ class API {
     }
 
     static async addToCart(productId, quantity) {
-        return this.request('POST', '/api/CartApi/AddToCart', { productId, quantity });
+        console.log("API called");
+
+        const requestBody = { productId, quantity };
+
+        console.log("Request body:", requestBody);
+
+        const response = await this.request('POST', '/api/CartApi/AddToCart', requestBody);
+
+        console.log("Response:", response);
+
+        console.log("API called 2");
+        return response;
     }
+
 
     static async getCart() {
         return this.request('GET', '/api/CartApi/GetCart');

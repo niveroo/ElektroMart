@@ -8,21 +8,20 @@ function Cart() {
     const ref = useRef();
     const dispatch = useDispatch();
 
-    // Достаем состояние корзины и пользователя из Redux
-    const { isLoading, error, productsMap } = useSelector(state => state.cart);
-    const { isLoggedIn } = useSelector(state => state.user); // Проверяем, залогинен ли пользователь
+    const { refreshed, isLoading, error, productsMap } = useSelector(state => state.cart);
+    const { isLoggedIn } = useSelector(state => state.user);
 
     const [show, setShow] = useState(false);
     const toggle = () => setShow(prev => !prev);
 
-    // Загрузка корзины, если пользователь залогинен
     useEffect(() => {
         if (isLoggedIn) {
-            dispatch(getCart()); // Получение товаров из корзины, если пользователь залогинен
+            if (refreshed === false) {
+                dispatch(getCart());
+            }
         }
-    }, [dispatch, isLoggedIn]);
+    }, [isLoggedIn, dispatch, refreshed]);
 
-    // Формируем контент модального окна в зависимости от состояния авторизации
     const content = useMemo(() => {
         if (!isLoggedIn) {
             return <div className="not-logged-in">You are not logged in. Please log in to view your cart.</div>;
@@ -40,7 +39,6 @@ function Cart() {
             return 'Your cart is empty.';
         }
 
-        // Если есть товары, показываем их
         return Object.values(productsMap).map(product => (
             <CartItem key={product.id} product={product} />
         ));

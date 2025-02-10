@@ -16,10 +16,9 @@ const ProductInfo = () => {
     }, [dispatch, id]);
 
     const handleAddToCart = () => {
+        console.log("Кнопка нажата");
         const quantity = 1;
-        dispatch(AddToCart(product.id, quantity));
-        console.log(product.id, quantity);
-        console.log("added to cart", product);
+        dispatch(AddToCart({ productId: product.id, quantity }));
     };
 
     if (isLoading) {

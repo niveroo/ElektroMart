@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import API from '../../services/API';
+import { useDispatch } from 'react-redux';
 
 const initialState = {
     isLoading: false,
     error: false,
     productsMap: [],
+    refreshed: false
 };
 
 export const getCart = createAsyncThunk(
@@ -21,14 +23,12 @@ export const getCart = createAsyncThunk(
 
 export const AddToCart = createAsyncThunk(
     'cart/AddToCart',
-    async ({ productId, quantity }, { rejectWithValue }) => {
+    async ({ productId, quantity }, { rejectWithValue }) => { // Разбиваем объект на два параметра
         try {
-            const response = await API.addToCart(productId, quantity);
-
-            const data = await response.json();
-            console.log(data)
+            const data = await API.addToCart(productId, quantity);
             return data;
         } catch (error) {
+            console.error("Error adding product to cart:", error);
             return rejectWithValue('Failed to add product to cart');
         }
     }
@@ -49,6 +49,7 @@ export const cartSlice = createSlice({
                 state.error = false;
             })
             .addCase(getCart.fulfilled, (state, action) => {
+                state.refreshed = true;
                 state.isLoading = false;
                 state.productsMap = action.payload;
             })
@@ -60,6 +61,7 @@ export const cartSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(AddToCart.fulfilled, (state, action) => {
+                state.refreshed = false;
                 state.isLoading = false;
             })
             .addCase(AddToCart.rejected, (state, action) => {
