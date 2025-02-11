@@ -34,6 +34,20 @@ export const AddToCart = createAsyncThunk(
     }
 );
 
+export const deleteCart = createAsyncThunk(
+    'cart/deleteCart',
+    async ({ productId }, { rejectWithValue }) => {
+        try {
+            console.log("Dispatch called with Id:", productId);
+            const response = await API.deleteFromCart(productId);
+            return response;
+        } catch (error) {
+            console.error("Error deleting product from cart:", error);
+            return rejectWithValue('Failed to delete product from cart');
+        }
+    }
+);
+
 export const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -67,6 +81,17 @@ export const cartSlice = createSlice({
             .addCase(AddToCart.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload || 'Failed to add product to cart';
+            })
+            .addCase(deleteCart.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteCart.fulfilled, (state, action) => {
+                state.refreshed = false;
+                state.isLoading = false;
+            })
+            .addCase(deleteCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload || 'Failed to delete product from cart';
             });
     },
 });

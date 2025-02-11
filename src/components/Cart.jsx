@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash/debounce';
 import '../styles/Cart.css';
-import { getCart } from '../store/slices/cartSlice';
+import { deleteCart, getCart } from '../store/slices/cartSlice';
 
 function Cart() {
     const ref = useRef();
@@ -22,6 +22,11 @@ function Cart() {
         }
     }, [isLoggedIn, dispatch, refreshed]);
 
+    const handleDeleteClick = (productId) => {
+        console.log("Clicked delete with id:", productId);
+        dispatch(deleteCart({ productId }));
+    };
+
     const content = useMemo(() => {
         if (!isLoggedIn) {
             return <div className="not-logged-in">You are not logged in. Please log in to view your cart.</div>;
@@ -40,7 +45,7 @@ function Cart() {
         }
 
         return Object.values(productsMap).map(product => (
-            <CartItem key={product.id} product={product} />
+            <CartItem key={product.id} product={product} handleDeleteClick={handleDeleteClick} />
         ));
     }, [isLoading, error, isLoggedIn, productsMap]);
 
@@ -58,19 +63,20 @@ function Cart() {
 
     return (
         <div className="cart-anchor" onClick={toggle}>
-            Cart {productsMap.length ? ` (${productsMap.length})` : null}
+            Cart {Object.keys(productsMap).length ? ` (${Object.keys(productsMap).length})` : null}
             {modal}
         </div>
     );
 }
 
-function CartItem({ product }) {
+function CartItem({ product, handleDeleteClick }) {
     return (
         <div className="cart-item">
             <span>{product.productName}</span>
             <span>Quantity: {product.quantity}</span>
             <span>Price: {product.price}</span>
             <span>Total: {product.totalPrice}</span>
+            <button onClick={() => handleDeleteClick(product.productId)}>Delete</button>
         </div>
     );
 }

@@ -85,7 +85,7 @@ class API {
     }
 
     static async deleteFromCart(productId) {
-        return this.request('DELETE', '/api/CartApi/RemoveFromCart/', { productId });
+        return this.request('DELETE', '/api/CartApi/RemoveFromCartByProductId', { productId });
     }
 }
 
