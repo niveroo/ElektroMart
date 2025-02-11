@@ -16,7 +16,6 @@ const ProductInfo = () => {
     }, [dispatch, id]);
 
     const handleAddToCart = () => {
-        console.log("Кнопка нажата");
         const quantity = 1;
         dispatch(AddToCart({ productId: product.id, quantity }));
     };

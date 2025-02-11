@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeUser, login } from '../store/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Login.css'
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -20,7 +21,7 @@ const Login = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={handleSubmit}>
             <div>
                 <label>Username:</label>
                 <input
@@ -39,15 +40,9 @@ const Login = () => {
                     required
                 />
             </div>
-            <div>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={() => setRememberMe(!rememberMe)}
-                    />
-                    Remember me
-                </label>
+            <div className="checkbox-class">
+                <input type="checkbox" id="rememberMe" />
+                <label>Remember me</label>
             </div>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <button type="submit" disabled={loading}>

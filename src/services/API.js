@@ -64,21 +64,15 @@ class API {
         return this.request('POST', '/api/AccountApi/logout');
     }
 
-    static async addToCart(productId, quantity) {
-        console.log("API called");
-
-        const requestBody = { productId, quantity };
-
-        console.log("Request body:", requestBody);
-
-        const response = await this.request('POST', '/api/CartApi/AddToCart', requestBody);
-
-        console.log("Response:", response);
-
-        console.log("API called 2");
-        return response;
+    static async register(email, password, confirmPassword) {
+        return this.request('POST', '/api/AccountApi/register', { email, password, confirmPassword });
     }
 
+    static async addToCart(productId, quantity) {
+        const requestBody = { productId, quantity };
+        const response = await this.request('POST', '/api/CartApi/AddToCart', requestBody);
+        return response;
+    }
 
     static async getCart() {
         return this.request('GET', '/api/CartApi/GetCart');
@@ -86,6 +80,10 @@ class API {
 
     static async deleteFromCart(productId) {
         return this.request('DELETE', '/api/CartApi/RemoveFromCartByProductId', { productId });
+    }
+
+    static async createOrder(shippingAddress) {
+        return this.request('POST', '/api/OrderApi/CreateOrder', { shippingAddress });
     }
 }
 

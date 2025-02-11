@@ -1,14 +1,23 @@
-// src/store/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../services/API';
-import { clearCart } from './cartSlice';
 
-// Thunk for handling login
 export const login = createAsyncThunk(
     'user/login',
     async ({ username, password, rememberMe }, { rejectWithValue }) => {
         try {
             const data = await API.login(username, password, rememberMe);
+            return { token: data.token };
+        } catch (error) {
+            return rejectWithValue('Login failed');
+        }
+    }
+);
+
+export const register = createAsyncThunk(
+    'user/register',
+    async ({ email, password, confirmPassword }, { rejectWithValue }) => {
+        try {
+            const data = await API.register(email, password, confirmPassword);
             return { token: data.token };
         } catch (error) {
             return rejectWithValue('Login failed');
@@ -46,7 +55,6 @@ export const initializeUser = createAsyncThunk(
         }
     }
 );
-
 
 const userSlice = createSlice({
     name: 'user',

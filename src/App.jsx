@@ -7,6 +7,8 @@ import LoginPage from './pages/LoginPage';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { initializeUser } from './store/slices/userSlice';
+import OrderPage from './pages/OrderPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +24,8 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </Router>
     </>
