@@ -1,9 +1,17 @@
 .cart-anchor {
-    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
     cursor: pointer;
-    user-select: none;
-    border: 2px solid rgba(255, 255, 255, 0.247);
-    border-radius: 10px;
+    transition: background-color 0.25s;
+}
+
+.cart-anchor:hover {
+    background-color: rgb(44, 44, 44);
 }
 
 .cart-container {
